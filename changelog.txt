@@ -1,0 +1,15 @@
+1.2:
+
+- Bugfix: the calculation of a CRC32 checksum has been fixed, which had caused
+          the creation of broken savegames in 6-7% of attempts.
+- first version uploaded to github 
+
+1.1:
+
+- Enhancement: accept Android_Id instead of IMEI for Android tablets
+
+
+1.0 (first release):
+
+- parse savegame files for Android phones and iDevices and allow basic
+  modifications such as various currencies and removal of obstacles
