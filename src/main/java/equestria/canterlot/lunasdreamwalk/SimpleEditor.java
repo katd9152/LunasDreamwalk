@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -72,6 +73,8 @@ public class SimpleEditor extends JPanel {
             return null;
         }
 
+        // Sort by name
+        Collections.sort(ponies);
         return ponies;
     }
 

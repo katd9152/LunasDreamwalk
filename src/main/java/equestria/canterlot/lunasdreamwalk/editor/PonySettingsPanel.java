@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.xml.xpath.XPathExpressionException;
@@ -57,6 +59,8 @@ public class PonySettingsPanel extends JPanel implements InputElement {
 
         this.editor = editor;
         this.id = ponyId;
+
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         this.createElements();
 
@@ -147,9 +151,13 @@ public class PonySettingsPanel extends JPanel implements InputElement {
         stars.setMaximumSize(stars.getSize());
         stars.setPreferredSize(stars.getSize());
 
+        this.add(Box.createHorizontalStrut(5));
         this.add(minus);
+        this.add(Box.createHorizontalStrut(5));
         this.add(stars);
+        this.add(Box.createHorizontalStrut(5));
         this.add(plus);
+        this.add(Box.createHorizontalGlue());
 
     }
 

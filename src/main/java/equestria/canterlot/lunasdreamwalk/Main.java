@@ -13,6 +13,8 @@ public class Main {
         LunasDreamwalk ld = new LunasDreamwalk();
         ld.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        ld.pack();
+        ld.setSize(ld.getSize().width, 600);
         ld.setVisible(true);
     }
 
