@@ -67,7 +67,6 @@ public class SimpleEditor extends JPanel {
 
             for(int i = 0; i < e.getLength(); i++) {
                 ponies.add(e.item(i).getAttributes().getNamedItem("ID").getNodeValue());
-                System.out.println(ponies.get(i));
             }
         } catch(XPathExpressionException e1) {
             return null;
