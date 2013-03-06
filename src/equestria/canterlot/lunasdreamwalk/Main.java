@@ -9,25 +9,26 @@ import javax.swing.UIManager;
  */
 public class Main {
 
-	private static void createAndShowGUI() {
-		LunasDreamwalk ld = new LunasDreamwalk();
-		ld.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private static void createAndShowGUI() {
+        LunasDreamwalk ld = new LunasDreamwalk();
+        ld.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		ld.setVisible(true);
-	}
+        ld.setVisible(true);
+    }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			// I don't care
-		}
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception e) {
+            // I don't care
+        }
 
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				createAndShowGUI();
-			}
-		});
-	}
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
 }
