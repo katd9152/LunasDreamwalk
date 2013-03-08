@@ -1,3 +1,10 @@
+1.4:
+
+- Enhancement: Pony levels can now be set to blue stars, meaning the pony has
+               enough XP to level up, but not yet played the "flying game" for
+               that level. This should help with quests that demand getting a
+               pony to a specified level.
+
 1.3:
 
 - Enhancement: Use tabs for better usability

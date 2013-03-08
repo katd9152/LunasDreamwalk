@@ -28,17 +28,20 @@ public class PonySettingsPanel extends JPanel implements InputElement {
     private SimpleEditor editor;
     private String id;
     private int level;
+    private int shards;
     private JPanel stars;
     private JPanel plus;
     private JPanel minus;
 
-    private static BufferedImage starIcon, starEmptyIcon, plusIcon, minusIcon;
+    private static BufferedImage starIcon, starEmptyIcon, starBlueIcon,
+                    plusIcon, minusIcon;
     private static final int STAR_SIZE = 15;
 
     static {
         try {
             starIcon = ImageIO.read(PonySettingsPanel.class.getResource("/images/star.png"));
             starEmptyIcon = ImageIO.read(PonySettingsPanel.class.getResource("/images/star_empty.png"));
+            starBlueIcon = ImageIO.read(PonySettingsPanel.class.getResource("/images/star_blue.png"));
             plusIcon = ImageIO.read(PonySettingsPanel.class.getResource("/images/plus.png"));
             minusIcon = ImageIO.read(PonySettingsPanel.class.getResource("/images/minus.png"));
 
@@ -72,8 +75,17 @@ public class PonySettingsPanel extends JPanel implements InputElement {
         stars.repaint();
     }
 
+    private void setShards(int shards) {
+        this.shards = shards > 10 ? 10 : (shards < 0 ? 0 : shards);
+        stars.repaint();
+    }
+
     private int getLevel() {
         return this.level;
+    }
+
+    private int getShards() {
+        return this.shards;
     }
 
     private void createElements() {
@@ -94,9 +106,15 @@ public class PonySettingsPanel extends JPanel implements InputElement {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                setLevel(getLevel() - 1);
+                if(getShards() == 10) {
+                    setShards(0);
+                } else if(getLevel() > 0) {
+                    setLevel(getLevel() - 1);
+                    setShards(10);
+                }
             }
         });
+
         minus.setSize(STAR_SIZE, STAR_SIZE);
         minus.setMinimumSize(minus.getSize());
         minus.setMaximumSize(minus.getSize());
@@ -117,7 +135,12 @@ public class PonySettingsPanel extends JPanel implements InputElement {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                setLevel(getLevel() + 1);
+                if(getShards() == 10) {
+                    setShards(0);
+                    setLevel(getLevel() + 1);
+                } else if(getLevel() < 5) {
+                    setShards(10);
+                }
             }
         });
         plus.setSize(STAR_SIZE, STAR_SIZE);
@@ -139,6 +162,8 @@ public class PonySettingsPanel extends JPanel implements InputElement {
 
                     if(level > i) {
                         g.drawImage(starIcon, STAR_SIZE * i, 0, STAR_SIZE, STAR_SIZE, null);
+                    } else if(level == i && shards == 10) {
+                        g.drawImage(starBlueIcon, STAR_SIZE * i, 0, STAR_SIZE, STAR_SIZE, null);
                     } else {
                         g.drawImage(starEmptyIcon, STAR_SIZE * i, 0, STAR_SIZE, STAR_SIZE, null);
                     }
@@ -163,11 +188,13 @@ public class PonySettingsPanel extends JPanel implements InputElement {
 
     public void apply() {
         int value = getLevel();
+        int shards = getShards();
 
         Element e;
         try {
             e = editor.getXMLElementByString("/MLP_Save/MapZone/GameObjects/Pony_Objects/Object[@ID='" + id + "']/Game/Level");
             e.setAttribute("Level", Integer.toString(value));
+            e.setAttribute("Shards", Integer.toString(shards));
         } catch(XPathExpressionException e1) {
             return;
         }
@@ -177,17 +204,19 @@ public class PonySettingsPanel extends JPanel implements InputElement {
     public void reset() {
 
         Element e;
-        int level = -1;
+        int level = 0, shards = 0;
         try {
             e = editor.getXMLElementByString("/MLP_Save/MapZone/GameObjects/Pony_Objects/Object[@ID='" + id + "']/Game/Level");
 
             level = Integer.parseInt(e.getAttribute("Level"));
+            shards = Integer.parseInt(e.getAttribute("Shards"));
 
         } catch(XPathExpressionException e1) {
 
         }
 
         this.level = level;
+        this.shards = shards;
         stars.repaint();
     }
 
