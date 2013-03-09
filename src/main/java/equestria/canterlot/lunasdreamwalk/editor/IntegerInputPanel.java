@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.math.BigInteger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -124,13 +122,14 @@ public class IntegerInputPanel extends JPanel implements InputElement {
         int value = Integer.parseInt(input.getText());
 
         // sanity checks
-
         if(value < min) {
-            value = min;
+            throw new IllegalArgumentException("Value is " + value + ". Has to be > " + min);
         }
+
         if(value > max) {
-            value = max;
+            throw new IllegalArgumentException("Value is " + value + ". Has to be < " + max);
         }
+
         Element e = editor.getXMLElementByString(this.xmlPath);
         e.setAttribute(attributeName, Integer.toString(value));
     }

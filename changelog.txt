@@ -1,3 +1,11 @@
+1.6:
+
+- Bugfix: accept 18 digit MEID as alternative to 14 digit/character MEID
+- Bugfix: Do NOT write the savegame if any of the inputs were invalid
+- Bugfix: sanitize pony level data before writing it (e.g. adjusting shards/xp
+          to plausible values)
+- Enhancement: Display and enforce lower/upper limits for number input fields
+
 1.5:
 
 - Bugfix: accept MEID (14 character hexadecimal number) as alternative to IMEI.

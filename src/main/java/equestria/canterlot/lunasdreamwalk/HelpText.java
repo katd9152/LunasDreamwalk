@@ -19,7 +19,7 @@ public class HelpText extends JPanel {
     public HelpText() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(new EmptyBorder(5, 5, 5, 5));
-        this.add(new JLabel("Android users need to use their IMEI (15 digits) or MEID (18 digits or 14 digits andletters 'A-F') to decrypt savegames."));
+        this.add(new JLabel("Android users need to use their IMEI (15 digits) or MEID (18 digits or 14 digits and letters 'A-F') to decrypt savegames."));
         this.add(new JLabel("If your Android device has no IMEI/MEID (e.g. a Tablet), use your 'Android_Id' (16 digits and letters 'A-F')."));
         this.add(new JLabel("If it doesn't work, try switching between lowecase and uppercase characters. The input is case-sensitive."));
         this.add(new JLabel("iPhone/iPad users need to use their GLUID instead decrypt savegames. Google to find out where and how to find it."));

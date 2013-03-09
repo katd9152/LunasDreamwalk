@@ -43,7 +43,7 @@ public class LunasDreamwalk extends JFrame {
      */
     private static final long serialVersionUID = 509117784292343936L;
 
-    private static final String version = "1.5";
+    private static final String version = "1.6";
 
     private JButton load, retry, save;
     private JTextField imeiGluid, key, fileLocation;
