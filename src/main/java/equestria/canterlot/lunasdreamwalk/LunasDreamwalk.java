@@ -251,6 +251,7 @@ public class LunasDreamwalk extends JFrame {
             this.simpleEditor.applyAllChanges();
         } catch(Exception e) {
             this.showErrorMessage("Failed to Save:\n\n" + e.getMessage());
+            return;
         }
 
         String content;
