@@ -293,70 +293,49 @@ public class LunasDreamwalk extends JFrame {
 
         String withoutSpecialCharacters = imeiOrGLUID.replaceAll("[^a-fA-F0-9]", "");
 
-        // probably GLUID
+        // probably GLUID (at least 32 hexadecimal)
         if(withoutSpecialCharacters.length() >= 32) {
             withoutSpecialCharacters = withoutSpecialCharacters.substring(0, 32);
             return Util.hexStringToByteArray(withoutSpecialCharacters);
         }
-        // probably an IMEI
+        // probably an IMEI (15 digits)
         else if(withoutSpecialCharacters.length() == 15 && withoutSpecialCharacters.matches("[0-9]+")) {
-            byte[] key2 = Util.md5(Util.stringToASCIIByteArray(withoutSpecialCharacters + "com.gameloft.android.ANMP.GloftPOHM"));
-
-            int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
-            int[] newInts = new int[ints.length];
-            for(int i = 0; i < ints.length; i++) {
-                if(ints[i % 3] < 0) {
-                    newInts[i] = 0x7FFFFFFF - ints[i];
-                } else {
-                    newInts[i] = ints[i];
-                }
-            }
-
-            ints = newInts;
-
-            return Util.intsToBytes(ints);
+            return createAndroidKey(withoutSpecialCharacters);
         }
         // probably a MEID (14 hexadecimal)
         else if(withoutSpecialCharacters.length() == 14) {
-            byte[] key2 = Util.md5(Util.stringToASCIIByteArray(withoutSpecialCharacters + "com.gameloft.android.ANMP.GloftPOHM"));
-
-            int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
-            int[] newInts = new int[ints.length];
-            for(int i = 0; i < ints.length; i++) {
-                if(ints[i % 3] < 0) {
-                    newInts[i] = 0x7FFFFFFF - ints[i];
-                } else {
-                    newInts[i] = ints[i];
-                }
-            }
-
-            ints = newInts;
-
-            return Util.intsToBytes(ints);
+            return createAndroidKey(withoutSpecialCharacters);
         }
-        // probably an Android_Id
+        // probably a MEID (alternative 18 digits representation)
+        else if(withoutSpecialCharacters.length() == 18 && withoutSpecialCharacters.matches("[0-9]+")) {
+            return createAndroidKey(withoutSpecialCharacters);
+        }
+        // probably an Android_Id (16 hexadecimal)
         else if(withoutSpecialCharacters.length() == 16) {
-            byte[] key2 = Util.md5(Util.stringToASCIIByteArray(withoutSpecialCharacters + "com.gameloft.android.ANMP.GloftPOHM"));
-
-            int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
-            int[] newInts = new int[ints.length];
-            for(int i = 0; i < ints.length; i++) {
-                if(ints[i % 3] < 0) {
-                    newInts[i] = 0x7FFFFFFF - ints[i];
-                } else {
-                    newInts[i] = ints[i];
-                }
-            }
-
-            ints = newInts;
-
-            return Util.intsToBytes(ints);
+            return createAndroidKey(withoutSpecialCharacters);
         }
         // Not parseable
         else {
             return null;
         }
+    }
 
+    private static byte[] createAndroidKey(String input) {
+        byte[] key2 = Util.md5(Util.stringToASCIIByteArray(input + "com.gameloft.android.ANMP.GloftPOHM"));
+
+        int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
+        int[] newInts = new int[ints.length];
+        for(int i = 0; i < ints.length; i++) {
+            if(ints[i % 3] < 0) {
+                newInts[i] = 0x7FFFFFFF - ints[i];
+            } else {
+                newInts[i] = ints[i];
+            }
+        }
+
+        ints = newInts;
+
+        return Util.intsToBytes(ints);
     }
 
     /**
