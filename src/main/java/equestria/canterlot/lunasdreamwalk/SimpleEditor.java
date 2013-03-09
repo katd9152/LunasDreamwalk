@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import equestria.canterlot.lunasdreamwalk.editor.InputElement;
-import equestria.canterlot.lunasdreamwalk.editor.IntegerInputField;
+import equestria.canterlot.lunasdreamwalk.editor.IntegerInputPanel;
 import equestria.canterlot.lunasdreamwalk.editor.PonySettingsPanel;
 import equestria.canterlot.lunasdreamwalk.editor.RemoveTypeCheckBox;
 import equestria.canterlot.lunasdreamwalk.editor.SimpleEditorTab;
@@ -99,15 +99,15 @@ public class SimpleEditor extends JPanel {
         String parasprites = "/MLP_Save/MapZone[@ID='0']/GameObjects/Parasprite_Objects";
 
         try {
-            addInputElement(playerTab, new IntegerInputField(this, "Coins", pdata, "Coins"));
-            addInputElement(playerTab, new IntegerInputField(this, "Gems", pdata, "Hearts"));
-            addInputElement(playerTab, new IntegerInputField(this, "Hearts", pdata, "Social"));
-            addInputElement(playerTab, new IntegerInputField(this, "Loyalty Shards", sdata, "Loyalty"));
-            addInputElement(playerTab, new IntegerInputField(this, "Kindness Shards", sdata, "Kindness"));
-            addInputElement(playerTab, new IntegerInputField(this, "Honesty Shards", sdata, "Honesty"));
-            addInputElement(playerTab, new IntegerInputField(this, "Generosity Shards", sdata, "Generosity"));
-            addInputElement(playerTab, new IntegerInputField(this, "Laughter Shards", sdata, "Laughter"));
-            addInputElement(playerTab, new IntegerInputField(this, "Magic Shards", sdata, "Magic"));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Coins", pdata, "Coins", 0, 2000000000));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Gems", pdata, "Hearts", 0, 2000000000));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Hearts", pdata, "Social", 0, 2000000000));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Loyalty Shards", sdata, "Loyalty", 0, 999));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Kindness Shards", sdata, "Kindness", 0, 999));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Honesty Shards", sdata, "Honesty", 0, 999));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Generosity Shards", sdata, "Generosity", 0, 999));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Laughter Shards", sdata, "Laughter", 0, 999));
+            addInputElement(playerTab, new IntegerInputPanel(this, "Magic Shards", sdata, "Magic", 0, 999));
 
             addInputElement(mapTab, new RemoveTypeCheckBox(this, "Rubble/Stones/Roots", clearable));
             addInputElement(mapTab, new RemoveTypeCheckBox(this, "Parasprites", parasprites));
@@ -131,6 +131,7 @@ public class SimpleEditor extends JPanel {
             name = ((InputElement) element).name();
             this.inputs.add((InputElement) element);
         }
+
         tab.addLine(name + ":", element);
     }
 
@@ -165,6 +166,7 @@ public class SimpleEditor extends JPanel {
      * @throws IOException
      */
     private Document parseSavegame(String xml) throws ParserConfigurationException, SAXException, IOException {
+        //System.out.println(xml);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 

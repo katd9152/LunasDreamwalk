@@ -29,6 +29,7 @@ public class PonySettingsPanel extends JPanel implements InputElement {
     private String id;
     private int level;
     private int shards;
+    private int xp;
     private JPanel stars;
     private JPanel plus;
     private JPanel minus;
@@ -80,12 +81,20 @@ public class PonySettingsPanel extends JPanel implements InputElement {
         stars.repaint();
     }
 
+    private void setXP(int xp) {
+        this.xp = xp;
+    }
+
     private int getLevel() {
         return this.level;
     }
 
     private int getShards() {
         return this.shards;
+    }
+
+    private int getXP() {
+        return this.xp;
     }
 
     private void createElements() {
@@ -108,10 +117,13 @@ public class PonySettingsPanel extends JPanel implements InputElement {
             public void mouseClicked(MouseEvent e) {
                 if(getShards() == 10) {
                     setShards(0);
+
                 } else if(getLevel() > 0) {
                     setLevel(getLevel() - 1);
                     setShards(10);
                 }
+                // always set XP to 0 to avoid conflicts
+                setXP(0);
             }
         });
 
@@ -141,6 +153,8 @@ public class PonySettingsPanel extends JPanel implements InputElement {
                 } else if(getLevel() < 5) {
                     setShards(10);
                 }
+                // always set XP to 0 to avoid conflicts
+                setXP(0);
             }
         });
         plus.setSize(STAR_SIZE, STAR_SIZE);
@@ -187,14 +201,38 @@ public class PonySettingsPanel extends JPanel implements InputElement {
     }
 
     public void apply() {
-        int value = getLevel();
+        int level = getLevel();
         int shards = getShards();
+        int xp = getXP();
+
+        // sanity checks, in case we missed some illegal settings before
+        if(level < 0)
+            level = 0;
+
+        if(level > 5)
+            level = 5;
+
+        if(level == 5) {
+            shards = 0;
+            xp = 0;
+        }
+
+        if(shards < 0)
+            shards = 0;
+
+        if(shards > 10)
+            shards = 10;
+
+        if(shards == 10) {
+            xp = 0;
+        }
 
         Element e;
         try {
             e = editor.getXMLElementByString("/MLP_Save/MapZone/GameObjects/Pony_Objects/Object[@ID='" + id + "']/Game/Level");
-            e.setAttribute("Level", Integer.toString(value));
+            e.setAttribute("Level", Integer.toString(level));
             e.setAttribute("Shards", Integer.toString(shards));
+            e.setAttribute("CurrentEXP", Integer.toString(xp));
         } catch(XPathExpressionException e1) {
             return;
         }
@@ -204,19 +242,21 @@ public class PonySettingsPanel extends JPanel implements InputElement {
     public void reset() {
 
         Element e;
-        int level = 0, shards = 0;
+        int level = 0, shards = 0, xp = 0;
         try {
             e = editor.getXMLElementByString("/MLP_Save/MapZone/GameObjects/Pony_Objects/Object[@ID='" + id + "']/Game/Level");
 
             level = Integer.parseInt(e.getAttribute("Level"));
             shards = Integer.parseInt(e.getAttribute("Shards"));
+            xp = Integer.parseInt(e.getAttribute("CurrentEXP"));
 
         } catch(XPathExpressionException e1) {
 
         }
 
-        this.level = level;
-        this.shards = shards;
+        this.setShards(shards);
+        this.setLevel(level);
+        this.setXP(xp);
         stars.repaint();
     }
 
