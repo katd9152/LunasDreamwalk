@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>LunasDreamwalk</groupId>
 	<artifactId>LunasDreamwalk</artifactId>
-	<version>1.4</version>
+	<version>1.5</version>
 	<name>Luna's Dreamwalk</name>
 	<description>Savegame Editor for the MLP mobile game</description>
 	<build>

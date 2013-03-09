@@ -43,7 +43,7 @@ public class LunasDreamwalk extends JFrame {
      */
     private static final long serialVersionUID = 509117784292343936L;
 
-    private static final String version = "1.4";
+    private static final String version = "1.5";
 
     private JButton load, retry, save;
     private JTextField imeiGluid, key, fileLocation;
@@ -126,7 +126,7 @@ public class LunasDreamwalk extends JFrame {
                 byte[] tmp = deriveKeyFromIMEIorGLUID(imeiGluid.getText());
 
                 if(tmp == null) {
-                    key.setText("Invalid IMEI/Android_Id/GLUID");
+                    key.setText("Invalid IMEI/MEID/Android_Id/GLUID");
                     enableFileButtons(false);
                 } else {
                     key.setText(Util.byteArrayToHexString(tmp));
@@ -286,7 +286,7 @@ public class LunasDreamwalk extends JFrame {
     }
 
     /**
-     * Calculate an encryption key from IMEI, Android_Id or GLUID
+     * Calculate an encryption key from IMEI, MEID, Android_Id or GLUID
      * 
      */
     private static byte[] deriveKeyFromIMEIorGLUID(String imeiOrGLUID) {
@@ -300,6 +300,24 @@ public class LunasDreamwalk extends JFrame {
         }
         // probably an IMEI
         else if(withoutSpecialCharacters.length() == 15 && withoutSpecialCharacters.matches("[0-9]+")) {
+            byte[] key2 = Util.md5(Util.stringToASCIIByteArray(withoutSpecialCharacters + "com.gameloft.android.ANMP.GloftPOHM"));
+
+            int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
+            int[] newInts = new int[ints.length];
+            for(int i = 0; i < ints.length; i++) {
+                if(ints[i % 3] < 0) {
+                    newInts[i] = 0x7FFFFFFF - ints[i];
+                } else {
+                    newInts[i] = ints[i];
+                }
+            }
+
+            ints = newInts;
+
+            return Util.intsToBytes(ints);
+        }
+        // probably a MEID (14 hexadecimal)
+        else if(withoutSpecialCharacters.length() == 14) {
             byte[] key2 = Util.md5(Util.stringToASCIIByteArray(withoutSpecialCharacters + "com.gameloft.android.ANMP.GloftPOHM"));
 
             int[] ints = Util.bytesToInts(Util.reorderBytes(key2));
@@ -333,7 +351,6 @@ public class LunasDreamwalk extends JFrame {
             ints = newInts;
 
             return Util.intsToBytes(ints);
-
         }
         // Not parseable
         else {
@@ -361,7 +378,7 @@ public class LunasDreamwalk extends JFrame {
         c.gridy++;
         c.gridwidth = 1;
         c.gridx = 0;
-        this.add(new JLabel(" IMEI/Android_Id/GLUID :"), c);
+        this.add(new JLabel(" IMEI/MEID/Android_Id/GLUID :"), c);
 
         c.gridy++;
         this.add(new Label("Derived Key:"), c);

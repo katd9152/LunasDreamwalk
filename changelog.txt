@@ -1,3 +1,9 @@
+1.5:
+
+- Bugfix: accept MEID (14 character hexadecimal number) as alternative to IMEI.
+          This should be the only format that is returned by getDeviceId() in
+          Android.
+
 1.4:
 
 - Enhancement: Pony levels can now be set to blue stars, meaning the pony has
@@ -18,7 +24,7 @@
 
 1.1:
 
-- Enhancement: accept Android_Id instead of IMEI for Android tablets
+- Bugfix: accept Android_Id instead of IMEI for Android tablets
 
 
 1.0 (first release):
